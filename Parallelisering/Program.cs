@@ -1,4 +1,6 @@
-﻿namespace Parallelisering
+﻿using System;
+
+namespace Parallelisering
 {
     class Program
     {
@@ -6,9 +8,12 @@
         {
             var quicksort = new Quicksort();
             var plinq = new Plinq();
-
-            quicksort.QuicksortExample();
-            //plinq.SimpleQuery();
+            for (int i = 0; i < 5; i++)
+            {
+                plinq.PlinqQuery();
+//                quicksort.QuicksortExample();
+            }
+            Console.ReadKey();
         }
     }
 }

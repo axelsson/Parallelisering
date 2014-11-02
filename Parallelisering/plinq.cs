@@ -6,7 +6,7 @@ namespace Parallelisering
     public class Plinq
     {
 
-        public void SimpleQuery()
+        public void PlinqQuery()
         {
             var source = Enumerable.Range(100, 20000);
 
@@ -32,8 +32,7 @@ namespace Parallelisering
             // Method syntax is also supported 
             var parallelQuery3 = source.AsParallel().Where(n => n % 10 == 0).Select(n => n);
 
-            Console.WriteLine("\nPress any key to exit...");
-            Console.ReadLine();
+            Console.ReadKey();
         }
 
         static void DoSomething(int i)

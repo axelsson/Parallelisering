@@ -50,3 +50,72 @@
 //        }
 //    }
 //}
+
+using System;
+using System.Diagnostics;
+
+namespace Parallelisering
+{
+    class Quicksort
+    {
+
+        public void QuicksortExample()
+        {
+            const int size = 1000000;
+            var list = new int[size];
+            var random = new Random();
+            for (var i = 0; i < size; i++)
+            {
+                list[i] = random.Next(size);
+            }
+            Console.WriteLine("Beginning to sort.");
+            var timer = new Stopwatch();
+            timer.Start();
+            QuicksortExample2(list,0,size-1);
+            timer.Stop();
+            Console.WriteLine("Time "+timer.ElapsedMilliseconds);
+            Console.ReadKey();
+        }
+
+        public static void QuicksortExample2(int[] elements, int left, int right)
+        {
+            int i = left, j = right;
+            int pivot = elements[(left + right) / 2];
+
+            while (i <= j)
+            {
+                while (elements[i].CompareTo(pivot) < 0)
+                {
+                    i++;
+                }
+
+                while (elements[j].CompareTo(pivot) > 0)
+                {
+                    j--;
+                }
+
+                if (i <= j)
+                {
+                    // Swap
+                    int tmp = elements[i];
+                    elements[i] = elements[j];
+                    elements[j] = tmp;
+
+                    i++;
+                    j--;
+                }
+            }
+
+            // Recursive calls
+            if (left < j)
+            {
+                QuicksortExample2(elements, left, j);
+            }
+
+            if (i < right)
+            {
+                QuicksortExample2(elements, i, right);
+            }
+        }
+    }
+}

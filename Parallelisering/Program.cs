@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Parallelisering
+﻿namespace Parallelisering
 {
     class Program
     {
         static void Main(string[] args)
         {
-            //var quicksort = new Quicksort();
-            //quicksort.PrintLine();
+            var quicksort = new Quicksort();
             var plinq = new Plinq();
-            plinq.SimpleQuery();
+
+            quicksort.QuicksortExample();
+            //plinq.SimpleQuery();
         }
     }
 }

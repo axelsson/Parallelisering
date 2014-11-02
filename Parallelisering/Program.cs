@@ -10,8 +10,10 @@ namespace Parallelisering
     {
         static void Main(string[] args)
         {
-            var quicksort = new Quicksort();
-            quicksort.PrintLine();
+            //var quicksort = new Quicksort();
+            //quicksort.PrintLine();
+            var plinq = new Plinq();
+            plinq.SimpleQuery();
         }
     }
 }

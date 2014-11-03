@@ -10,8 +10,8 @@ namespace Parallelisering
             var plinq = new Plinq();
             for (int i = 0; i < 5; i++)
             {
-                plinq.PlinqQuery();
-//                quicksort.QuicksortExample();
+                //plinq.PlinqQuery();
+                quicksort.QuicksortExample();
             }
             Console.ReadKey();
         }

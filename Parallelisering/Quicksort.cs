@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Parallelisering
@@ -57,12 +58,24 @@ namespace Parallelisering
                 RecursiveQuicksort(array, last + 1, right, maxDepth);
             }
             else
-            {
+            {       //skapa ny tråd för ena intervallet och låt main fortsätta på andra
                 --maxDepth;
+                
                 Parallel.Invoke(
                     () => RecursiveQuicksort(array, left, last - 1, maxDepth),
                     () => RecursiveQuicksort(array, last + 1, right, maxDepth));
+                /*
+                var newThread = StartTheThread(array, left, last - 1, maxDepth);
+                RecursiveQuicksort(array, last + 1, right, maxDepth);
+                 */ 
             }
+        }
+
+        public static Thread StartTheThread(int[] array, int left, int right, int maxDepth)
+        {
+            var t = new Thread(() => RecursiveQuicksort(array, left, right, maxDepth));
+            t.Start();
+            return t;
         }
 
         static void SwapElements(int[] array, int i, int j)

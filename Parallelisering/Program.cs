@@ -13,7 +13,7 @@ namespace Parallelisering
                 //plinq.PlinqQuery();
                 quicksort.QuicksortExample();
             }
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }

@@ -8,7 +8,9 @@ namespace Parallelisering
     class Quicksort
     {
         private const int Size = 10000000;
-        private const int Processors = 10;
+        private const int Processors = 8;
+        private static readonly int ThreadLimit = Environment.ProcessorCount * 2;
+        volatile int _activeThreads = 0;
 
         public void QuicksortExample()
         {
@@ -19,7 +21,7 @@ namespace Parallelisering
             RecursiveQuicksort(list, 0, list.Length - 1, Processors);
             timer.Stop();
 
-            Console.WriteLine("Time " + timer.ElapsedMilliseconds+" processorcount: "+Processors);
+            Console.WriteLine("Time " + timer.ElapsedMilliseconds+" processorcount: "+Processors+" or threadLimit: "+ThreadLimit);
         }
 
         private static int[] InitList()
@@ -33,7 +35,7 @@ namespace Parallelisering
             return list;
         }
 
-        private static void RecursiveQuicksort(int[] array, int left, int right, int maxDepth)
+        public void RecursiveQuicksort(int[] array, int left, int right, int maxDepth)
         {
             if (left >= right)
             {
@@ -42,7 +44,7 @@ namespace Parallelisering
 
             SwapElements(array, left, (left + right) / 2);
             var last = left;
-            for (int current = left + 1; current <= right; ++current)
+            for (var current = left + 1; current <= right; ++current)
             {
                 if (array[current].CompareTo(array[left]) < 0)
                 {
@@ -53,29 +55,26 @@ namespace Parallelisering
 
             SwapElements(array, left, last);
             if (maxDepth < 1)
+            //if (_activeThreads > ThreadLimit)
             {
                 RecursiveQuicksort(array, left, last - 1, maxDepth);
                 RecursiveQuicksort(array, last + 1, right, maxDepth);
             }
             else
-            {       //skapa ny tråd för ena intervallet och låt main fortsätta på andra
-                --maxDepth;
+            {
                 
+                --maxDepth;
+                Parallel.Invoke(
+                () => RecursiveQuicksort(array, left, last - 1, maxDepth),
+                () => RecursiveQuicksort(array, last + 1, right, maxDepth));
+                /*
+                Interlocked.Increment(ref _activeThreads);
                 Parallel.Invoke(
                     () => RecursiveQuicksort(array, left, last - 1, maxDepth),
                     () => RecursiveQuicksort(array, last + 1, right, maxDepth));
-                /*
-                var newThread = StartTheThread(array, left, last - 1, maxDepth);
-                RecursiveQuicksort(array, last + 1, right, maxDepth);
-                 */ 
+                Interlocked.Decrement(ref _activeThreads);
+                 */
             }
-        }
-
-        public static Thread StartTheThread(int[] array, int left, int right, int maxDepth)
-        {
-            var t = new Thread(() => RecursiveQuicksort(array, left, right, maxDepth));
-            t.Start();
-            return t;
         }
 
         static void SwapElements(int[] array, int i, int j)

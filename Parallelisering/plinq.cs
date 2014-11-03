@@ -18,12 +18,6 @@ namespace Parallelisering
             // Process result sequence in parallel
             parallelQuery.ForAll((e) => DoSomething(e));
 
-            // Or use foreach to merge results first. 
-            foreach (var n in parallelQuery)
-            {
-                Console.WriteLine(n);
-            }
-
             // You can also use ToArray, ToList, etc as with LINQ to Objects. 
             var parallelQuery2 = (from num in source.AsParallel()
                 where num % 10 == 0
